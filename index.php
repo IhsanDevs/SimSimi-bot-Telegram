@@ -1,6 +1,6 @@
 <?php
 $content = file_get_contents("php://input");
-$token = '<token_bot>';
+$token = '<token_bot>'; //isi dengan token bot telegram kamu.
 $apiLink = "https://api.telegram.org/bot$token/"; 
 $update = json_decode($content, true);
 if(!@$update["message"]) $val = $update['callback_query'];
@@ -23,13 +23,9 @@ if ($text == "/start") {
     file_get_contents($apiLink . "sendmessage?chat_id=$chat_id&text=Bot ini versi 1.0.0");
     return false;
 } else {
-    $endpointSimSimi = file_get_contents("https://simsumi.herokuapp.com/api?text=".urlencode($text)."&lang=id");
+    $endpointSimSimi = file_get_contents("https://api.simsimi.net/v1/?text=".urlencode($text)."&lang=id");
     $pesan = json_decode($endpointSimSimi);
     $pesan = $pesan->success;
-    if (!empty($pesan)) {
-        file_get_contents($apiLink . "sendmessage?chat_id=$chat_id&text=$pesan");
-    } else {
-        file_get_contents($apiLink . "sendmessage?chat_id=$chat_id&text=Maaf. Simi tidak mengerti apa yang kamu katakan :(");
-    }
+    file_get_contents($apiLink . "sendmessage?chat_id=$chat_id&text=$pesan");
     
 }
